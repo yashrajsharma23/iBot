@@ -26,29 +26,34 @@ nltk.download('punkt')
 nltk.download('wordnet')
 lemmatizer = WordNetLemmatizer()
 
-docs_folder = 'docs_folder/'
-
 words = []
 classes = []
 documents = []
 ignore_words = ['?', '!']
-data_file = open(docs_folder + 'management_intents.json').read()
+data_file = open('../data/raw/management_intents.json').read()
 intents = json.loads(data_file)
 
 from os import path
-import model
 
-if path.exists(docs_folder + "chatbot_management_model.h5"):
+
+def create_model():
+    import train_model
+
+
+if path.exists("../models/chatbot_management_model.h5"):
     input = input("Model already exist, do you want to recreate the model? Y/N: ")
-    if (input.lower() == 'y' or input.lower() == 'yes'):
-        model.create_model()
+    if input.lower() == 'y' or input.lower() == 'yes':
+        create_model()
+        # train_model.create_model()
+else:
+    create_model()
 
 # model = load_model('C:/Users/Yash Raj/Python Projects/3335 - Data mining & Analysis/chatbot_model.h5')
-model = tf.keras.models.load_model(docs_folder + "chatbot_management_model.h5")
+model = tf.keras.models.load_model("../models/chatbot_management_model.h5")
 
-intents = json.loads(open(docs_folder + 'management_intents.json').read())
-words = pickle.load(open(docs_folder + 'management_words.pkl', 'rb'))
-classes = pickle.load(open(docs_folder + 'management_classes.pkl', 'rb'))
+intents = json.loads(open('../data/raw/management_intents.json').read())
+words = pickle.load(open('../data/processed/management_words.pkl', 'rb'))
+classes = pickle.load(open('../data/processed/management_classes.pkl', 'rb'))
 
 
 def clean_up_sentence(sentence):
@@ -72,7 +77,7 @@ def bow(sentence, words, show_details=True):
                 bag[i] = 1
                 if show_details:
                     print("found in bag: %s" % w)
-    return (np.array(bag))
+    return np.array(bag)
 
 
 def predict_class(sentence, model):
@@ -89,7 +94,7 @@ def predict_class(sentence, model):
     return return_list
 
 
-class ApiAction():
+class ApiAction:
     action = ""
 
     def name(self, act):
@@ -118,7 +123,7 @@ class ApiAction():
             print(today, ":", tomm)
             for i in data:
                 match_date = i['date'].split('T')[0]
-                if (str(match_date) == str(today)):
+                if str(match_date) == str(today):
                     for j in ipl_teams:
                         if j in i["team-1"] or j in i["team-2"]:
                             if "winner_team" in i:
@@ -134,7 +139,7 @@ class ApiAction():
                                     count) + ". Today match is between {} and {}.".format(i["team-1"], i["team-2"])
                                 print(count, ")", out_message)
                             break
-                elif (str(match_date) == str(tomm)):
+                elif str(match_date) == str(tomm):
                     for j in ipl_teams:
                         if j in i["team-1"] or j in i["team-2"]:
                             count = count + 1
@@ -155,9 +160,9 @@ def getResponse(ints, intents_json):
     tag = ints[0]['intent']
     list_of_intents = intents_json['intents']
     for i in list_of_intents:
-        if (i['tag'] == tag):
+        if i['tag'] == tag:
             print("Tag::::::: " + tag)
-            if (tag == "current_matches"):
+            if tag == "current_matches":
                 print("Tag::::::: " + tag)
                 result = ApiAction.run(datetime, timedelta)
                 print("Match results::::" + result)
@@ -165,9 +170,6 @@ def getResponse(ints, intents_json):
             else:
                 result = random.choice(i['responses'])
                 break
-    #         if(i['tag']== tag):
-    #             result = random.choice(i['responses'])
-    #             break
     return result
 
 

@@ -1,41 +1,22 @@
-
 import nltk
 import json
 import pickle
 
 import numpy as np
-from h5py.utils import check_numpy_read
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
 from keras.optimizers import SGD
-from keras.models import load_model
 import random
 
 from nltk.stem import WordNetLemmatizer
-
-import tensorflow as tf
-
-import requests
-from datetime import datetime, timedelta
-
-API_URL = "https://cricapi.com/api/"
-API_KEY = "o1kw33cvFcgkgXyV2TyeMhhlw9p2"
-# Creating GUI with tkinter
-import tkinter
-from tkinter import *
 
 nltk.download('punkt')
 nltk.download('wordnet')
 lemmatizer = WordNetLemmatizer()
 
-docs_folder = 'docs_folder/'
+import os
 
-#words = []
-#classes = []
-#documents = []
-#ignore_words = ['?', '!']
-#data_file = open(docs_folder + 'management_intents.json').read()
-#intents = json.loads(data_file)
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
 def create_model():
@@ -43,8 +24,11 @@ def create_model():
     classes = []
     documents = []
     ignore_words = ['?', '!']
-    docs_folder = 'docs_folder/'
-    data_file = open(docs_folder + 'management_intents.json').read()
+
+    # with open('../../data/raw/management_intents.json', 'r') as myfile:
+    #     data_file = myfile.read()
+
+    data_file = open('../data/raw/management_intents.json').read()
     intents = json.loads(data_file)
 
     for intent in intents['intents']:
@@ -71,8 +55,8 @@ def create_model():
 
     print(len(words), "unique lemmatized words", words)
 
-    pickle.dump(words, open(docs_folder + 'management_words.pkl', 'wb'))
-    pickle.dump(classes, open(docs_folder + 'management_classes.pkl', 'wb'))
+    pickle.dump(words, open('../data/processed/management_words.pkl', 'wb'))
+    pickle.dump(classes, open('../data/processed/management_classes.pkl', 'wb'))
 
     # initializing training data
     training = []
@@ -117,7 +101,10 @@ def create_model():
     # fitting and saving the model
     hist = model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
 
-    model.save(docs_folder + 'chatbot_management_model.h5', hist)
+    model.save('../models/chatbot_management_model.h5', hist)
 
     print("model created")
     return model
+
+
+create_model()
