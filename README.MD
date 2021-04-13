@@ -1,14 +1,9 @@
-# TODO: please update badge link in config.yml and readme
-
 # iBot 
 
 Here, we have Jarvis the toddler bot to provide instant support to users
 
 ## How to Use this repo
-- By running the code using the Jupyter notebooks available in this repository's [notebooks](./notebooks) directory.
-- By launching executable versions of these notebooks using binder: [![Binder](https://mybinder.org/badge.svg)](binder_link in config)
-- By launching executable versions of these notebooks using Google Colab: [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](colab_link in config)
-- By reading the online (non-executable) version of the notebooks using nbviewer: [![Nbviewer](https://raw.github.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg?sanitize=true)](nbviewer_link in config)
+- By running the code using the PyCharm
 
 ## About
 See [Index.ipynb](nbviewer_link in config) for an index of the notebooks available to accompany the text.
