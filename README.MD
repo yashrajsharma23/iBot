@@ -1,7 +1,6 @@
 # TODO: please update badge link in config.yml and readme
 
-# project_name 
-iBot
+# iBot 
 
 Here, we have Jarvis the toddler bot to provide instant support to users
 
