@@ -1,8 +1,9 @@
 # TODO: please update badge link in config.yml and readme
 
-# project_name
+# project_name 
+iBot
 
-To provide instant support to users
+Here, we have Jarvis the toddler bot to provide instant support to users
 
 ## How to Use this repo
 - By running the code using the Jupyter notebooks available in this repository's [notebooks](./notebooks) directory.
